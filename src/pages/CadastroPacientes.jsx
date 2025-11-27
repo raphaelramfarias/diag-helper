@@ -1,39 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 
 export default function CadastroPacientes() {
-  const [pacientes, setPacientes] = useState([
-    {
-      nome: "João da Silva",
-      dataNascimento: "1985-06-15",
-      telefone: "(11) 91234-5678",
-      cpf: "123.456.789-00",
-      idade: "38",
-    },
-    {
-      nome: "Maria Oliveira",
-      dataNascimento: "1990-09-22",
-      telefone: "(21) 99876-5432",
-      cpf: "987.654.321-00",
-      idade: "33",
-    },
-    {
-      nome: "Carlos Pereira",
-      dataNascimento: "1978-12-05",
-      telefone: "(31) 93456-7890",
-      cpf: "456.789.123-00",
-      idade: "45",
-    },
-    {
-      nome: "Ana Souza",
-      dataNascimento: "2000-03-18",
-      telefone: "(41) 98765-4321",
-      cpf: "321.654.987-00",
-      idade: "23",
-    }
-  ]);
-
-  const [editIndex, setEditIndex] = useState(null);
+  const [pacientes, setPacientes] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [pesquisa, setPesquisa] = useState("");
 
   const [formPacientes, setFormPacientes] = useState({
     nome: "",
@@ -41,71 +12,142 @@ export default function CadastroPacientes() {
     telefone: "",
     cpf: "",
     idade: "",
+    exames: [],
   });
 
+  const [novoExame, setNovoExame] = useState({
+    tipo: "",
+    data: "",
+    resultado: "",
+  });
+
+  // Carregar pacientes do backend
+  useEffect(() => {
+    fetch("http://localhost:3001/pacientes")
+      .then((res) => res.json())
+      .then((data) => setPacientes(data))
+      .catch((err) => console.error("Erro ao carregar pacientes:", err));
+  }, []);
+
+  // Atualiza dados do paciente
   const handleChange = (e) => {
-    setFormPacientes({
-      ...formPacientes,
-      [e.target.name]: e.target.value,
-    });
+    setFormPacientes({ ...formPacientes, [e.target.name]: e.target.value });
   };
 
-  function iniciarEdicao(index) {
-    setEditIndex(index);
-    setFormPacientes(pacientes[index]);
-  }
+  // Atualiza dados do exame temporário
+  const handleExameChange = (e) => {
+    setNovoExame({ ...novoExame, [e.target.name]: e.target.value });
+  };
 
-  function salvarEdicao(e) {
-    e.preventDefault();
-
-    const listaAtualizada = [...pacientes];
-    listaAtualizada[editIndex] = formPacientes;
-
-    setPacientes(listaAtualizada);
-    setEditIndex(null);
-
+  // Adiciona exame ao array do paciente
+  const adicionarExame = () => {
+    if (!novoExame.tipo || !novoExame.data || !novoExame.resultado) return;
     setFormPacientes({
-      nome: "",
-      dataNascimento: "",
-      telefone: "",
-      cpf: "",
-      idade: "",
+      ...formPacientes,
+      exames: [...formPacientes.exames, novoExame],
     });
+    setNovoExame({ tipo: "", data: "", resultado: "" });
+  };
+
+  // Iniciar edição de paciente
+  function iniciarEdicao(paciente) {
+    setEditId(paciente.id);
+    setFormPacientes(paciente);
   }
 
-  function excluirPaciente(index) {
-    setPacientes(pacientes.filter((_, i) => i !== index));
-  }
-
-  const cadastrarPaciente = (e) => {
+  // Salvar edição
+  const salvarEdicao = async (e) => {
     e.preventDefault();
+    try {
+      const res = await fetch(`http://localhost:3001/pacientes/${editId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formPacientes),
+      });
 
+      const atualizado = await res.json();
+      setPacientes((prev) =>
+        prev.map((p) => (p.id === editId ? atualizado : p))
+      );
+      setEditId(null);
+      limparFormulario();
+    } catch (error) {
+      console.error("Erro ao editar paciente:", error);
+    }
+  };
+
+  // Excluir paciente
+  const excluirPaciente = async (id) => {
+    try {
+      await fetch(`http://localhost:3001/pacientes/${id}`, { method: "DELETE" });
+      setPacientes((prev) => prev.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error("Erro ao excluir paciente:", error);
+    }
+  };
+
+  // Cadastrar paciente com exames
+  const cadastrarPaciente = async (e) => {
+    e.preventDefault();
     if (!formPacientes.nome || !formPacientes.dataNascimento || !formPacientes.telefone) {
       alert("Preencha os campos obrigatórios!");
       return;
     }
 
-    setPacientes([...pacientes, formPacientes]);
+    try {
+      const res = await fetch("http://localhost:3001/pacientes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formPacientes),
+      });
 
+      const pacienteSalvo = await res.json();
+      setPacientes((prev) => [...prev, pacienteSalvo]);
+      limparFormulario();
+    } catch (error) {
+      console.error("Erro ao cadastrar paciente:", error);
+    }
+  };
+
+  function limparFormulario() {
     setFormPacientes({
       nome: "",
       dataNascimento: "",
       telefone: "",
       cpf: "",
       idade: "",
+      exames: [],
     });
-  };
+    setNovoExame({ tipo: "", data: "", resultado: "" });
+  }
+
+  // Filtrar pacientes pela pesquisa (nome ou CPF)
+  const pacientesFiltrados = pacientes.filter(
+    (p) =>
+      p.nome.toLowerCase().includes(pesquisa.toLowerCase()) ||
+      p.cpf.includes(pesquisa)
+  );
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <Navbar />
-
       <main className="flex-1 p-8">
         <h1 className="text-2xl font-bold mb-6">Cadastro de Pacientes</h1>
 
-        {/* Formulário simples sem card */}
+        {/* Campo de pesquisa */}
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="🔍 Pesquisar paciente por nome ou CPF"
+            value={pesquisa}
+            onChange={(e) => setPesquisa(e.target.value)}
+            className="w-full md:w-1/3 p-2 border rounded-lg"
+          />
+        </div>
+
+        {/* FORMULÁRIO COMPLETO (Paciente + Exames) */}
         <form
-          onSubmit={editIndex !== null ? salvarEdicao : cadastrarPaciente}
+          onSubmit={editId ? salvarEdicao : cadastrarPaciente}
           className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-6 rounded-lg border"
         >
           <div>
@@ -118,7 +160,6 @@ export default function CadastroPacientes() {
               className="w-full p-2 mt-1 border rounded-lg"
             />
           </div>
-
           <div>
             <label className="font-medium text-gray-700">Data de Nascimento</label>
             <input
@@ -129,7 +170,6 @@ export default function CadastroPacientes() {
               className="w-full p-2 mt-1 border rounded-lg"
             />
           </div>
-
           <div>
             <label className="font-medium text-gray-700">Telefone</label>
             <input
@@ -141,7 +181,6 @@ export default function CadastroPacientes() {
               placeholder="(xx) xxxxx-xxxx"
             />
           </div>
-
           <div>
             <label className="font-medium text-gray-700">CPF</label>
             <input
@@ -153,7 +192,6 @@ export default function CadastroPacientes() {
               placeholder="xxx.xxx.xxx-xx"
             />
           </div>
-
           <div>
             <label className="font-medium text-gray-700">Idade</label>
             <input
@@ -166,45 +204,103 @@ export default function CadastroPacientes() {
             />
           </div>
 
+          {/* Campos do exame */}
+          <div className="md:col-span-3 border-t pt-4 mt-4">
+            <h2 className="font-bold text-lg mb-2">Adicionar Exame</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+              <input
+                type="text"
+                name="tipo"
+                placeholder="Tipo de exame"
+                value={novoExame.tipo}
+                onChange={handleExameChange}
+                className="w-full p-2 border rounded-lg"
+              />
+              <input
+                type="date"
+                name="data"
+                value={novoExame.data}
+                onChange={handleExameChange}
+                className="w-full p-2 border rounded-lg"
+              />
+              <input
+                type="text"
+                name="resultado"
+                placeholder="Resultado"
+                value={novoExame.resultado}
+                onChange={handleExameChange}
+                className="w-full p-2 border rounded-lg"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={adicionarExame}
+              className="bg-green-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-700 transition"
+            >
+              Adicionar Exame
+            </button>
+
+            {formPacientes.exames.length > 0 && (
+              <ul className="list-disc list-inside mt-2">
+                {formPacientes.exames.map((e, idx) => (
+                  <li key={idx}>
+                    {e.tipo} - {e.data} - {e.resultado}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
           <button
             type="submit"
-            className="bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition h-fit"
+            className="bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition md:col-span-3"
           >
-            {editIndex !== null ? "Salvar edição" : "Cadastrar"}
+            {editId ? "Salvar edição" : "Cadastrar paciente"}
           </button>
         </form>
 
-        {/* Lista */}
-        <h2 className="text-xl font-bold mt-8 mb-4 text-gray-800">
-          Pacientes cadastrados
-        </h2>
-
+        {/* LISTA DE PACIENTES */}
+        <h2 className="text-xl font-bold mt-8 mb-4 text-gray-800">Pacientes cadastrados</h2>
         <div className="space-y-2">
-          {pacientes.map((p, index) => (
+          {pacientesFiltrados.map((p) => (
             <div
-              key={index}
-              className="grid grid-cols-1 md:grid-cols-6 gap-4 bg-white p-4 rounded-lg border items-center"
+              key={p.id}
+              className="grid grid-cols-1 md:grid-cols-6 gap-4 bg-white p-4 rounded-lg border items-start"
             >
               <p><span className="font-bold">Nome:</span> {p.nome}</p>
               <p><span className="font-bold">Nascimento:</span> {p.dataNascimento}</p>
               <p><span className="font-bold">Telefone:</span> {p.telefone}</p>
               <p><span className="font-bold">CPF:</span> {p.cpf}</p>
               <p><span className="font-bold">Idade:</span> {p.idade}</p>
-
-              <div className="flex gap-3 mt-2 md:mt-0">
-                <button
-                  onClick={() => iniciarEdicao(index)}
-                  className="text-blue-600 font-semibold hover:underline"
-                >
-                  Editar
-                </button>
-
-                <button
-                  onClick={() => excluirPaciente(index)}
-                  className="text-red-600 font-semibold hover:underline"
-                >
-                  Excluir
-                </button>
+              <div className="flex flex-col gap-1">
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => iniciarEdicao(p)}
+                    className="text-blue-600 font-semibold hover:underline"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => excluirPaciente(p.id)}
+                    className="text-red-600 font-semibold hover:underline"
+                  >
+                    Excluir
+                  </button>
+                </div>
+                <div className="mt-2">
+                  <p className="font-bold">Exames:</p>
+                  {p.exames && p.exames.length > 0 ? (
+                    <ul className="list-disc list-inside">
+                      {p.exames.map((e, idx) => (
+                        <li key={idx}>
+                          {e.tipo} - {e.data} - {e.resultado}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-gray-500 text-sm">Nenhum exame cadastrado</p>
+                  )}
+                </div>
               </div>
             </div>
           ))}

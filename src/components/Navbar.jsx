@@ -54,6 +54,7 @@ function Navbar({ expanded, setExpanded }) {
             { to: "/GerarLaudo", icon: FilePlusCorner, label: "Gerar laudo" },
             { to: "/HistoricoLaudos", icon: History, label: "Histórico de laudos" },
             { to: "/CadastroPacientes", icon: UserPlus, label: "Cadastrar paciente" },
+            { to: "/LogisAuditoria", icon: FilePlusCorner, label: "Logis de Auditoria" },
             { to: "/configuracoes", icon: Settings, label: "Configurações" },
           ].map((item, i) => (
             <li key={i}>
