@@ -1,24 +1,27 @@
 const STORAGE_KEY = 'appUsuarios'; 
 
-// Lista de usuários iniciais (com as credenciais do seu Login.jsx original)
+// Lista de usuários iniciais
 const USUARIOS_INICIAIS = [
   {
     nome: "Administrador Geral",
     email: "admin@app.com",
     senha: "123",
-    tipoUsuario: "administrador", // VALOR: 'administrador'
+    tipoUsuario: "administrador", 
+    crm: null, 
   },
   {
     nome: "Dr. João",
     email: "medico@teste.com",
     senha: "123",
-    tipoUsuario: "medico", // VALOR: 'medico'
+    tipoUsuario: "medico",
+    crm: "CRM12345",
   },
   {
     nome: "Maria de Souza",
     email: "recepcao@teste.com",
     senha: "123",
-    tipoUsuario: "recepcionista", // VALOR: 'recepcionista'
+    tipoUsuario: "recepcionista",
+    crm: null, 
   },
 ];
 
