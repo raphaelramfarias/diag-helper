@@ -30,7 +30,7 @@ export default function MainLayout({ children }) {
       <FcMenu size={24} />
     </button>
     
-    {/* Opcional: Uma logo pequena ou título da página aqui no mobile fica ótimo */}
+  
     <span className="font-bold text-slate-700">DIAG HELPER</span>
   </div>
 

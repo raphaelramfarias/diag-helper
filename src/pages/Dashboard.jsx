@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PageWrapper from "../components/PageWrapper";
 import DashboardChart from "../components/DashboardChart";
-import { MdPeople, MdPersonCheck, MdPersonOff, MdAnalytics } from "react-icons/md";
+import { MdPeople, MdCheckCircle, MdPersonOff, MdAnalytics } from "react-icons/md";
 
 export default function Dashboard() {
   const [usuarios, setUsuarios] = useState([]);
@@ -40,7 +40,7 @@ export default function Dashboard() {
           <StatCard 
             title="Usuários Ativos" 
             value={ativos} 
-            icon={<MdPersonCheck size={24} />} 
+            icon={<MdCheckCircle size={24} />} 
             color="bg-green-600" 
           />
           <StatCard 

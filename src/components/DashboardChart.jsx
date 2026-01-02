@@ -1,5 +1,12 @@
 import React from "react";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 import PageWrapper from "../components/PageWrapper";
 import { MdPeople, MdCheckCircle, MdCancel, MdLockReset } from "react-icons/md";
 
@@ -16,25 +23,28 @@ export default function Dashboard() {
   return (
     <PageWrapper title="Visão Geral">
       <div className="max-w-7xl mx-auto space-y-8">
-        
         {/* INDICADORES (KPIs) - Grid Adaptável */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {data.map((card, index) => (
             <div
               key={card.name}
-              className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex items-center gap-4 transition-all hover:shadow-md"
+              className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-3 transition-all hover:shadow-md min-w-0"
             >
-              <div 
-                className="p-3 rounded-xl text-white shadow-sm"
+              {/* shrink-0 impede que o ícone seja esmagado pelo texto longo */}
+              <div
+                className="p-3 rounded-xl text-white shadow-sm shrink-0"
                 style={{ backgroundColor: COLORS[index] }}
               >
-                {React.cloneElement(card.icon, { size: 24 })}
+                {React.cloneElement(card.icon, { size: 20 })}{" "}
+                {/* Reduzi para 20 para ganhar espaço */}
               </div>
-              <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-tight leading-tight">
+
+              {/* min-w-0 permite que o container de texto entenda o limite do pai */}
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-tight leading-tight break-words">
                   {card.name}
                 </p>
-                <p className="text-2xl font-black text-slate-900">
+                <p className="text-xl font-black text-slate-900 truncate">
                   {card.value}
                 </p>
               </div>
@@ -44,7 +54,6 @@ export default function Dashboard() {
 
         {/* ÁREA DO GRÁFICO E RESUMO */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          
           {/* GRÁFICO COM CONTAINER RESPONSIVO */}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-[400px]">
             <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
@@ -63,11 +72,18 @@ export default function Dashboard() {
                   dataKey="value"
                 >
                   {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
                   ))}
                 </Pie>
-                <Tooltip 
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: "12px",
+                    border: "none",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -75,7 +91,9 @@ export default function Dashboard() {
 
           {/* LISTA DE RESUMO ESTILIZADA */}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-            <h2 className="text-lg font-bold text-slate-800 mb-6">Detalhamento</h2>
+            <h2 className="text-lg font-bold text-slate-800 mb-6">
+              Detalhamento
+            </h2>
             <div className="space-y-4">
               {data.map((entry, index) => (
                 <div
@@ -98,7 +116,6 @@ export default function Dashboard() {
               ))}
             </div>
           </div>
-
         </div>
       </div>
     </PageWrapper>
