@@ -4,7 +4,7 @@ import Layout from "../components/Navbar";
 import { carregarUsuarios, salvarUsuarios } from "../data/dadosUsuarios"; 
 
 export default function Usuarios() {
-  const ehAdministrador = true; // exemplo
+  const ehAdministrador = true; 
   const [novoUserFormData, setNovoUserFormData] = useState({ nome: "", email: "", senha: "", confirmaSenha: "", tipoUsuario: "medico" });
   const [erroNovoUser, setErroNovoUser] = useState("");
 

@@ -1,7 +1,7 @@
 {
   "name": "projeto-diagnostico",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
+    "axios": "^1.13.2",
     "chart.js": "^4.5.1",
     "framer-motion": "^12.23.24",
     "json-server": "^1.0.0-beta.3",
