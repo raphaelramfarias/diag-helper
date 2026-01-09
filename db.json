@@ -517,282 +517,84 @@
       "ip": "127.0.0.1"
     },
     {
-      "id": "01d8",
+      "id": "75b2",
       "usuario": "Admin Sistema",
       "acao": "Realizou login no sistema",
       "tipo": "LOGIN",
       "detalhes": null,
-      "data": "2026-01-08T14:43:59.510Z",
+      "data": "2026-01-09T01:43:03.539Z",
       "ip": "127.0.0.1"
     },
     {
-      "id": "1eb3",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T14:51:34.553Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "b322",
+      "id": "3e6a",
       "usuario": "Admin Sistema",
       "acao": "Realizou login no sistema",
       "tipo": "LOGIN",
       "detalhes": null,
-      "data": "2026-01-08T15:05:01.728Z",
+      "data": "2026-01-09T01:48:59.313Z",
       "ip": "127.0.0.1"
     },
     {
-      "id": "944a",
-      "usuario": "Joao Senna",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:05:13.864Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "1e41",
+      "id": "f2b7",
       "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
+      "acao": "Realizou POST (Paciente: aaaaaaaaa)",
+      "tipo": "INFO",
       "detalhes": null,
-      "data": "2026-01-08T15:07:36.189Z",
+      "data": "2026-01-09T01:50:45.018Z",
       "ip": "127.0.0.1"
     },
     {
-      "id": "b3b9",
-      "usuario": "Joao Senna",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:07:47.577Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "131c",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:08:05.581Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "d90d",
+      "id": "0e17",
       "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:11:07.996Z",
+      "acao": "Editou dados do paciente: Levisgton Eustáquio",
+      "tipo": "EDIÇÃO",
+      "detalhes": "CPF: \"08919675406\" → \"089.196.754-06\"",
+      "data": "2026-01-09T01:51:11.685Z",
       "ip": "127.0.0.1"
     },
     {
-      "id": "fa2c",
-      "usuario": "Joao Senna",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:11:19.922Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "1256",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:11:36.967Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "3c52",
+      "id": "f990",
       "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:16:04.235Z",
+      "acao": "Editou dados do paciente: maria silva",
+      "tipo": "EDIÇÃO",
+      "detalhes": "CPF: \"12345678999\" → \"123.456.789-99\"",
+      "data": "2026-01-09T01:51:20.007Z",
       "ip": "127.0.0.1"
     },
     {
-      "id": "304b",
-      "usuario": "Joao Senna",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:16:17.130Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "78ff",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:16:27.989Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "a258",
+      "id": "8550",
       "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:17:45.433Z",
+      "acao": "Editou dados do paciente: Joao silva",
+      "tipo": "EDIÇÃO",
+      "detalhes": "CPF: \"12345678998\" → \"123.456.789-98\"",
+      "data": "2026-01-09T01:51:25.943Z",
       "ip": "127.0.0.1"
     },
     {
-      "id": "898a",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:18:20.686Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "bb2c",
-      "usuario": "Joao Senna",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:18:30.059Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "1717",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:19:45.302Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "a31a",
+      "id": "c261",
       "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
+      "acao": "Realizou DELETE (ID: 3a0b)",
+      "tipo": "INFO",
       "detalhes": null,
-      "data": "2026-01-08T15:21:58.062Z",
+      "data": "2026-01-09T01:51:39.644Z",
       "ip": "127.0.0.1"
     },
     {
-      "id": "9acf",
-      "usuario": "Joao Senna",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:22:08.577Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "1db3",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:22:22.115Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "6f7d",
+      "id": "fbd8",
       "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
+      "acao": "Realizou POST (Paciente: aaaaaaaaaa)",
+      "tipo": "INFO",
       "detalhes": null,
-      "data": "2026-01-08T15:25:12.449Z",
+      "data": "2026-01-09T02:04:18.746Z",
       "ip": "127.0.0.1"
     },
     {
-      "id": "cb4d",
-      "usuario": "Joao Senna",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:25:22.763Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "2884",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:27:27.722Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "0475",
+      "id": "7d3e",
       "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
+      "acao": "Realizou DELETE (ID: e94b)",
+      "tipo": "INFO",
       "detalhes": null,
-      "data": "2026-01-08T15:27:39.020Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "8fb8",
-      "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:30:24.081Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "4998",
-      "usuario": "Joao Senna",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:30:34.898Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "44f8",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:30:44.724Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "0e03",
-      "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:32:22.303Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "8096",
-      "usuario": "Joao Senna",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:32:33.713Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "7bb1",
-      "usuario": "Fulano Silva",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T15:32:45.906Z",
-      "ip": "127.0.0.1"
-    },
-    {
-      "id": "52f0",
-      "usuario": "Admin Sistema",
-      "acao": "Realizou login no sistema",
-      "tipo": "LOGIN",
-      "detalhes": null,
-      "data": "2026-01-08T16:30:01.535Z",
+      "data": "2026-01-09T02:04:22.374Z",
       "ip": "127.0.0.1"
     }
   ],
@@ -818,7 +620,7 @@
       "nome": "Joao silva",
       "dataNascimento": "1980-12-12",
       "telefone": "81991254521",
-      "cpf": "12345678998",
+      "cpf": "123.456.789-98",
       "idade": "35",
       "exames": []
     },
@@ -827,13 +629,13 @@
       "nome": "maria silva",
       "dataNascimento": "1999-02-25",
       "telefone": "1823564879",
-      "cpf": "12345678999",
+      "cpf": "123.456.789-99",
       "idade": "35",
       "exames": []
     },
     {
       "id": "1667",
-      "cpf": "08919675406",
+      "cpf": "089.196.754-06",
       "nome": "Levisgton Eustáquio",
       "dataNascimento": "1991-10-07",
       "telefone": "81996624215"
