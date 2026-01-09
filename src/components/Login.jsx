@@ -61,12 +61,16 @@ export default function Login() {
       // Salva no LocalStorage para manter a sessão no Diag Helper
       localStorage.setItem("usuarioNome", usuario.nome);
       localStorage.setItem("usuarioPerfil", usuario.perfil);
-      localStorage.setItem("usuario", JSON.stringify(usuario));
+      // localStorage.setItem("usuario", JSON.stringify(usuario));
+      // Adiciona 'role' baseado no 'perfil' do usuário
+const usuarioParaNavbar = { ...usuario, role: usuario.perfil };
+localStorage.setItem("usuario", JSON.stringify(usuarioParaNavbar));
+
 
       // Pequeno delay para o feedback do carregando antes de navegar
       setTimeout(() => {
         navigate("/dashboard");
-      }, 500);
+      }, 300);
 
     } catch (err) {
       console.error("Erro no login:", err);
