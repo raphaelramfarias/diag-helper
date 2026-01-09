@@ -11,37 +11,33 @@ import GerarLaudo from "./pages/GerarLaudo";
 import Configuracoes from "./pages/Configuracoes";
 import HistoricoLaudos from "./pages/HistoricoLaudos";
 import LogsAuditoria from "./pages/LogsAuditoria";
-import SolicitarSenha from "./pages/SolicitarSenha";
-import AdminSolicitacoesSenha from "./pages/AdminSolicitacoesSenha";
 import Suporte from "./pages/Suporte";
-
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute"
 import MainLayout from "./components/MainLayout";
 import "./index.css";
 
 function App() {
+  // controla o expandir/retrair da sidebar
   const [expanded, setExpanded] = useState(true);
 
-  return (
+   return (
     <Routes>
-      {/* 🔓 ROTAS PÚBLICAS */}
+      {/* Página sem layout */}
       <Route path="/" element={<Login />} />
-      <Route path="/SolicitarSenha" element={<SolicitarSenha />} />
+
       <Route path="/Suporte" element={<Suporte />} />
 
-      {/* 🔒 ROTAS PRIVADAS */}
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute
-            perfisPermitidos={["administrador", "medico", "recepcionista"]}
-          >
-            <MainLayout expanded={expanded} setExpanded={setExpanded}>
-              <Dashboard />
-            </MainLayout>
-          </PrivateRoute>
-        }
-      />
+      {/* Páginas com layout */}
+     <Route
+      path="/dashboard"
+      element={
+    <PrivateRoute perfisPermitidos={["administrador", "medico", "recepcao"]}>
+      <MainLayout expanded={expanded} setExpanded={setExpanded}>
+        <Dashboard />
+      </MainLayout>
+    </PrivateRoute>
+  }
+     />
 
       <Route
         path="/Cadastro"
@@ -53,28 +49,27 @@ function App() {
       />
 
       <Route
-        path="/CadastroPacientes"
-        element={
-          <PrivateRoute
-            perfisPermitidos={["administrador", "medico", "recepcionista"]}
-          >
-            <MainLayout expanded={expanded} setExpanded={setExpanded}>
-              <CadastroPacientes />
-            </MainLayout>
-          </PrivateRoute>
-        }
-      />
+  path="/CadastroPacientes"
+  element={
+    <PrivateRoute perfisPermitidos={["administrador", "medico", "recepcao"]}>
+      <MainLayout expanded={expanded} setExpanded={setExpanded}>
+        <CadastroPacientes />
+      </MainLayout>
+    </PrivateRoute>
+  }
+/>
 
       <Route
-        path="/CadastroUsuario"
-        element={
-          <PrivateRoute perfisPermitidos={["administrador"]}>
-            <MainLayout expanded={expanded} setExpanded={setExpanded}>
-              <CadastroUsuario />
-            </MainLayout>
-          </PrivateRoute>
-        }
-      />
+  path="/CadastroUsuario"
+  element={
+    <PrivateRoute perfisPermitidos={["administrador"]}>
+      <MainLayout expanded={expanded} setExpanded={setExpanded}>
+        <CadastroUsuario />
+      </MainLayout>
+    </PrivateRoute>
+  }
+/>
+
 
       <Route
         path="/VisualizarImagens"
@@ -85,49 +80,48 @@ function App() {
         }
       />
 
-      <Route
-        path="/GerarLaudo"
-        element={
-          <PrivateRoute perfisPermitidos={["administrador", "medico"]}>
-            <MainLayout expanded={expanded} setExpanded={setExpanded}>
-              <GerarLaudo />
-            </MainLayout>
-          </PrivateRoute>
-        }
-      />
+     <Route
+  path="/GerarLaudo"
+  element={
+    <PrivateRoute perfisPermitidos={["administrador", "medico"]}>
+      <MainLayout expanded={expanded} setExpanded={setExpanded}>
+        <GerarLaudo />
+      </MainLayout>
+    </PrivateRoute>
+  }
+/>
+
 
       <Route
-        path="/LogsAuditoria"
-        element={
-          <PrivateRoute perfisPermitidos={["administrador"]}>
-            <MainLayout expanded={expanded} setExpanded={setExpanded}>
-              <LogsAuditoria />
-            </MainLayout>
-          </PrivateRoute>
-        }
-      />
+  path="/LogsAuditoria"
+  element={
+    <PrivateRoute perfisPermitidos={["administrador"]}>
+      <MainLayout expanded={expanded} setExpanded={setExpanded}>
+        <LogsAuditoria />
+      </MainLayout>
+    </PrivateRoute>
+  }
+/>
+
+
+     <Route
+  path="/Configuracoes"
+  element={
+    <PrivateRoute perfisPermitidos={["administrador", "medico", "recepcao"]}>
+      <MainLayout expanded={expanded} setExpanded={setExpanded}>
+        <Configuracoes />
+      </MainLayout>
+    </PrivateRoute>
+  }
+/>
+
 
       <Route
-        path="/AdminSolicitacoesSenha"
+        path="/Suporte"
         element={
-          <PrivateRoute perfisPermitidos={["administrador"]}>
-            <MainLayout expanded={expanded} setExpanded={setExpanded}>
-              <AdminSolicitacoesSenha />
-            </MainLayout>
-          </PrivateRoute>
-        }
-      />
-
-      <Route
-        path="/Configuracoes"
-        element={
-          <PrivateRoute
-            perfisPermitidos={["administrador", "medico", "recepcionista"]}
-          >
-            <MainLayout expanded={expanded} setExpanded={setExpanded}>
-              <Configuracoes />
-            </MainLayout>
-          </PrivateRoute>
+          <MainLayout expanded={expanded} setExpanded={setExpanded}>
+            <Suporte />
+          </MainLayout>
         }
       />
     </Routes>
