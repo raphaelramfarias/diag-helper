@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import PageWrapper from "../components/PageWrapper";
-import BotaoCadastrar from "../components/BotaoCadastrar";
+import { MdDelete, MdEdit, MdPersonAdd, MdSave } from "react-icons/md";
 import BarraPesquisa from "../components/BarraPesquisa";
-import { MdSave, MdEdit, MdDelete, MdPersonAdd } from "react-icons/md";
+import BotaoCadastrar from "../components/BotaoCadastrar";
+import PageWrapper from "../components/PageWrapper";
 // Importações para Auditoria
-import api from "../services/api";
-import { registrarLog } from "../services/auditService";
 import InputCPF from "../components/InputCPF";
 import InputTelefone from "../components/InputTelefone";
+import api from "../services/api";
+import { registrarLog } from "../services/auditService";
 
 export default function CadastroPacientes() {
   const [pacientes, setPacientes] = useState([]);
@@ -30,7 +30,7 @@ export default function CadastroPacientes() {
   useEffect(() => {
     api
       .get("/pacientes")
-      .then((res) => setPacientes(Array.isArray(res.data) ? res.data : []))
+      .then((res) => setPacientes(Array.isArray(res) ? res : []))
       .catch(console.error);
   }, []);
 
@@ -87,7 +87,7 @@ export default function CadastroPacientes() {
         }
 
         const res = await api.put(`/pacientes/${editId}`, form);
-        const atualizado = res.data;
+        const atualizado = res;
 
         // Registra log apenas se houver mudanças reais
         if (alteracoes.length > 0) {
@@ -107,7 +107,7 @@ export default function CadastroPacientes() {
       } else {
         // O log de CADASTRO é feito automaticamente pelo interceptor do Axios
         const res = await api.post("/pacientes", form);
-        setPacientes((prev) => [...prev, res.data]);
+        setPacientes((prev) => [...prev, res]);
       }
       limparFormulario();
     } catch (error) {
