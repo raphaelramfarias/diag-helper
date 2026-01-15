@@ -1,24 +1,11 @@
-import { useState, useEffect } from "react";
-import PageWrapper from "../components/PageWrapper";
+import { useEffect, useState } from "react";
+import { MdAnalytics, MdCheckCircle, MdPeople, MdPersonOff } from "react-icons/md";
 import DashboardChart from "../components/DashboardChart";
-import { MdPeople, MdCheckCircle, MdPersonOff, MdAnalytics } from "react-icons/md";
+import PageWrapper from "../components/PageWrapper";
+import { useUsuarios } from "../hooks/useApi";
 
 export default function Dashboard() {
-  const [usuarios, setUsuarios] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("http://localhost:3001/usuarios")
-      .then((res) => res.json())
-      .then((data) => {
-        setUsuarios(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Erro ao carregar usuários:", err);
-        setLoading(false);
-      });
-  }, []);
+  const { data: usuarios = [], loading, error } = useUsuarios();
 
   // Cálculos para os Cards de Indicadores
   const totalUsuarios = usuarios.length;
@@ -28,26 +15,26 @@ export default function Dashboard() {
   return (
     <PageWrapper title="Dashboard">
       <div className="max-w-7xl mx-auto space-y-6">
-        
+
         {/* CARDS DE INDICADORES (KPIs) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          <StatCard 
-            title="Total de Usuários" 
-            value={totalUsuarios} 
-            icon={<MdPeople size={24} />} 
-            color="bg-blue-600" 
+          <StatCard
+            title="Total de Usuários"
+            value={totalUsuarios}
+            icon={<MdPeople size={24} />}
+            color="bg-blue-600"
           />
-          <StatCard 
-            title="Usuários Ativos" 
-            value={ativos} 
-            icon={<MdCheckCircle size={24} />} 
-            color="bg-green-600" 
+          <StatCard
+            title="Usuários Ativos"
+            value={ativos}
+            icon={<MdCheckCircle size={24} />}
+            color="bg-green-600"
           />
-          <StatCard 
-            title="Usuários Inativos" 
-            value={inativos} 
-            icon={<MdPersonOff size={24} />} 
-            color="bg-red-500" 
+          <StatCard
+            title="Usuários Inativos"
+            value={inativos}
+            icon={<MdPersonOff size={24} />}
+            color="bg-red-500"
           />
         </div>
 
@@ -57,7 +44,7 @@ export default function Dashboard() {
             <MdAnalytics className="text-slate-400" size={24} />
             <h2 className="text-lg font-bold text-slate-800">Distribuição de Perfis</h2>
           </div>
-          
+
           <div className="w-full min-h-[300px] flex items-center justify-center">
             {loading ? (
               <div className="animate-pulse text-slate-400">Carregando dados...</div>

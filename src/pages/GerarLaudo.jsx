@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import PageWrapper from "../components/PageWrapper";
+import { useState } from "react";
 import BarraPesquisa from "../components/BarraPesquisa";
-import ListaPacientes from "../components/ListaPacientes";
 import ListaLaudos from "../components/ListaLaudos";
+import ListaPacientes from "../components/ListaPacientes";
+import PageWrapper from "../components/PageWrapper";
 
 import ModalConcluido from "../modals/ModalConcluido";
 import ModalFalha from "../modals/ModalFalha";
 import ModalProcessando from "../modals/ModalProcessando";
 
-// --- IMPORTAÇÃO DO SERVIÇO DE AUDITORIA ---
-import { registrarLog } from "../services/auditService";
-import { MdPersonSearch, MdDescription, MdCloudUpload, MdClose, MdCheckCircle } from "react-icons/md";
+import { MdCheckCircle, MdClose, MdCloudUpload, MdDescription, MdPersonSearch } from "react-icons/md";
+import { logsService } from "../services/dataServices";
+import { useMedicos, usePacientes, useDebounce, usePacientesFilterados } from "../hooks/useApi";
 
 export default function GerarLaudo() {
-  const [pacientes, setPacientes] = useState([]);
+  const { data: pacientes = [], loading: loadingPacientes } = usePacientes();
+  const { data: medicos = [], loading: loadingMedicos } = useMedicos();
+  
   const [pesquisa, setPesquisa] = useState("");
-  const [pesquisaDebounced, setPesquisaDebounced] = useState("");
   const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
-  const [medicos, setMedicos] = useState([]);
   const [medicoSelecionado, setMedicoSelecionado] = useState(null);
   const [modalAberto, setModalAberto] = useState(null);
   const [imagens, setImagens] = useState([]);
@@ -25,37 +25,9 @@ export default function GerarLaudo() {
   const [observacoes, setObservacoes] = useState("");
   const [dataLaudo, setDataLaudo] = useState("");
   const [laudos, setLaudos] = useState([]);
-
-  // Recupera o nome do usuário que está logado para o log
-  const usuarioLogado = localStorage.getItem("usuarioNome") || "Usuário Sistema";
-
-  useEffect(() => {
-    fetch("http://localhost:3001/pacientes")
-      .then((res) => res.json())
-      .then((data) => setPacientes(Array.isArray(data) ? data : []))
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:3001/usuarios")
-      .then((res) => res.json())
-      .then((data) => {
-        const medicosAtivos = data.filter(
-          (u) => u.status === "Ativo" && (u.perfil === "medico" || u.cargo.includes("Médico"))
-        );
-        setMedicos(medicosAtivos);
-      })
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setPesquisaDebounced(pesquisa), 500);
-    return () => clearTimeout(timer);
-  }, [pesquisa]);
-
-  const pacientesFiltrados = pacientes.filter(
-    (p) => p.nome.toLowerCase().includes(pesquisaDebounced.toLowerCase()) || p.cpf.includes(pesquisaDebounced)
-  );
+  
+  const pesquisaDebounced = useDebounce(pesquisa, 500);
+  const pacientesFiltrados = usePacientesFilterados(pacientes, pesquisaDebounced);
 
   function handleImagem(e) {
     const files = Array.from(e.target.files);
@@ -89,10 +61,10 @@ export default function GerarLaudo() {
       };
 
       // REGISTRO DE LOG
-      // Registra quem fez, o que fez e o detalhe (nome do paciente)
-      await registrarLog(
-        usuarioLogado, 
-        `Gerou laudo médico para o paciente: ${pacienteSelecionado.nome}`, 
+      const usuarioLogado = localStorage.getItem("usuario") ? JSON.parse(localStorage.getItem("usuario")).nome : "Usuário Sistema";
+      await logsService.create(
+        usuarioLogado,
+        `Gerou laudo médico para o paciente: ${pacienteSelecionado.nome}`,
         "LAUDO"
       );
 
@@ -120,7 +92,7 @@ export default function GerarLaudo() {
   return (
     <PageWrapper title="Gerar Novo Laudo">
       <div className="max-w-6xl mx-auto space-y-8 pb-20">
-        
+
         {/* ETAPA 1: SELEÇÃO DE PACIENTE */}
         <section className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
@@ -134,7 +106,7 @@ export default function GerarLaudo() {
               </span>
             )}
           </div>
-          
+
           <div className="p-6">
             <div className="max-w-md mb-6">
               <BarraPesquisa pesquisa={pesquisa} setPesquisa={setPesquisa} placeholder="Buscar por nome ou CPF..." />

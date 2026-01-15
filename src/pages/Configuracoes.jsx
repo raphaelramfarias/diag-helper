@@ -1,9 +1,8 @@
 import { useState } from "react";
+import { MdDeleteSweep, MdPerson, MdSave } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import PageWrapper from "../components/PageWrapper";
-import { MdSave, MdDeleteSweep, MdPerson } from "react-icons/md";
-
-const API_URL = "http://localhost:3001/usuarios";
+import api from "../services/api";
 
 export default function Configuracoes() {
   const navigate = useNavigate();
@@ -38,15 +37,7 @@ export default function Configuracoes() {
     };
 
     try {
-      const response = await fetch(`${API_URL}/${usuario.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dadosAtualizados)
-      });
-
-      if (!response.ok) throw new Error("Erro ao atualizar usuário");
-
-      const usuarioAtualizado = await response.json();
+      const usuarioAtualizado = await api.put(`/usuarios/${usuario.id}`, dadosAtualizados);
 
       localStorage.setItem(
         "usuario",
@@ -124,7 +115,7 @@ export default function Configuracoes() {
           <button
             onClick={salvarConfiguracoes}
             className="flex-1 flex items-center justify-center gap-2 px-6 py-4 
-            bg-gradient-to-r from-slate-800 to-slate-900 
+            bg-linear-to-r from-slate-800 to-slate-900 
             text-white rounded-2xl font-bold 
             hover:opacity-90 transition shadow-md"
           >
