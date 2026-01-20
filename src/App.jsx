@@ -9,7 +9,8 @@ import CadastroExames from "./pages/CadastroExames";
 import CadastroUsuario from "./pages/CadastroUsuario";
 import Configuracoes from "./pages/Configuracoes";
 import Dashboard from "./pages/Dashboard";
-import GerarLaudo from "./pages/GerarLaudo";
+import Laudo from "./pages/Laudo";
+import AnaliseExame from "./pages/AnaliseExame";
 import LogsAuditoria from "./pages/LogsAuditoria";
 import SolicitarSenha from "./pages/SolicitarSenha";
 import Suporte from "./pages/Suporte";
@@ -26,12 +27,12 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* 🔓 ROTAS PÚBLICAS */}
+        {/* ROTAS PÚBLICAS */}
         <Route path="/" element={<Login />} />
         <Route path="/SolicitarSenha" element={<SolicitarSenha />} />
         <Route path="/Suporte" element={<Suporte />} />
 
-        {/* 🔒 ROTAS PRIVADAS */}
+        {/* ROTAS PRIVADAS */}
         <Route
           path="/dashboard"
           element={
@@ -68,15 +69,18 @@ function App() {
         />
 
         <Route
-  path="/CadastroExames"
-  element={
-    <PrivateRoute perfisPermitidos={["administrador", "medico", "recepcao"]}>     ESTÁ LINHA
-      <MainLayout expanded={expanded} setExpanded={setExpanded}>
-        <CadastroExames />
-      </MainLayout>
-    </PrivateRoute>
-  }
-/>
+          path="/CadastroExames"
+          element={
+            <PrivateRoute
+              perfisPermitidos={["administrador", "medico", "recepcao"]}
+            >
+              {" "}
+              <MainLayout expanded={expanded} setExpanded={setExpanded}>
+                <CadastroExames />
+              </MainLayout>
+            </PrivateRoute>
+          }
+        />
 
         <Route
           path="/CadastroUsuario"
@@ -98,12 +102,36 @@ function App() {
           }
         />
 
-        <Route
-          path="/GerarLaudo"
+        {/* <Route
+          path="/Laudo"
           element={
             <PrivateRoute perfisPermitidos={["administrador", "medico"]}>
               <MainLayout expanded={expanded} setExpanded={setExpanded}>
-                <GerarLaudo />
+                <Laudo />
+              </MainLayout>
+            </PrivateRoute>
+          }
+        /> */}
+
+        {/* ROTA DA LISTA DE LAUDOS */}
+        <Route
+          path="/Laudo"
+          element={
+            <PrivateRoute perfisPermitidos={["administrador", "medico"]}>
+              <MainLayout expanded={expanded} setExpanded={setExpanded}>
+                <Laudo />
+              </MainLayout>
+            </PrivateRoute>
+          }
+        />
+
+        {/* NOVA ROTA: TELA DE ANÁLISE DETALHADA (Adicione esta abaixo) */}
+        <Route
+          path="/laudos/analise/:id"
+          element={
+            <PrivateRoute perfisPermitidos={["administrador", "medico"]}>
+              <MainLayout expanded={expanded} setExpanded={setExpanded}>
+                <AnaliseExame />
               </MainLayout>
             </PrivateRoute>
           }
