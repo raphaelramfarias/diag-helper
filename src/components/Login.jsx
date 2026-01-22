@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdEmail, MdLock, MdPerson, MdLogin, MdHelpOutline } from "react-icons/md";
+import { MdEmail, MdLock, MdLogin, MdHelpOutline } from "react-icons/md";
 import { registrarLog } from "../services/auditService"; 
 import api from "../services/api"; 
+import { useAuth } from "../context/AuthContext"; // 1. Importação do Hook
 
 import logo from "../assets/3.svg";
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    perfil: "", // Alinhado com o campo 'perfil' do seu CadastroUsuario
     email: "",
     senha: "",
   });
@@ -16,6 +16,9 @@ export default function Login() {
   const [mensagem, setMensagem] = useState("");
   const [carregando, setCarregando] = useState(false);
   const navigate = useNavigate();
+  
+  // 2. Acessando a função login do contexto
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,12 +30,10 @@ export default function Login() {
     setCarregando(true);
 
     try {
-      // 1. Normaliza o e-mail (conforme lógica do seu Cadastro)
       const emailBusca = formData.email.trim().toLowerCase();
       
-      // 2. Busca o usuário por e-mail e senha no db.json através da API
-      const res = await api.get(`/usuarios?email=${emailBusca}&senha=${formData.senha}`);
-      const usuario = res.data[0];
+      const usuarios = await api.get(`/usuarios?email=${emailBusca}&senha=${formData.senha}`);
+      const usuario = Array.isArray(usuarios.data) ? usuarios.data[0] : usuarios[0];
 
       if (!usuario) {
         setMensagem("Credenciais inválidas ou e-mail/senha incorretos.");
@@ -40,33 +41,27 @@ export default function Login() {
         return;
       }
 
-      // 3. Verificação de Perfil (Exatidão com o Cadastro)
-      if (usuario.perfil !== formData.perfil) {
-        setMensagem("Perfil de acesso incorreto para este usuário.");
-        setCarregando(false);
-        return;
-      }
-
-      // 4. Verificação de Status
       if (usuario.status === "Inativo") {
         setMensagem("Este usuário está inativo. Contate o administrador.");
         setCarregando(false);
         return;
       }
 
-      // --- SUCESSO NO LOGIN ---
       // Registro de Auditoria
       await registrarLog(usuario.nome, "Realizou login no sistema", "LOGIN");
 
-      // Salva no LocalStorage para manter a sessão no Diag Helper
-      localStorage.setItem("usuarioNome", usuario.nome);
-      localStorage.setItem("usuarioPerfil", usuario.perfil);
-      localStorage.setItem("usuario", JSON.stringify(usuario));
+      // 3. Preparando o objeto e atualizando o Contexto
+      // Isso já cuida do localStorage e do estado do React simultaneamente
+      const usuarioParaSessao = { 
+        ...usuario, 
+        role: usuario.perfil 
+      };
+      
+      login(usuarioParaSessao);
 
-      // Pequeno delay para o feedback do carregando antes de navegar
       setTimeout(() => {
         navigate("/dashboard");
-      }, 500);
+      }, 300);
 
     } catch (err) {
       console.error("Erro no login:", err);
@@ -88,24 +83,6 @@ export default function Login() {
           </div>
 
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            {/* Tipo de Usuário (Perfil) */}
-            <div className="relative">
-              <MdPerson className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-              <select
-                name="perfil"
-                value={formData.perfil}
-                onChange={handleChange}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none appearance-none bg-white text-gray-700 transition-all"
-                required
-              >
-                <option value="">Quem está acessando?</option>
-                <option value="administrador">Administrador</option>
-                <option value="medico">Médico</option>
-                <option value="recepcao">Recepção</option>
-              </select>
-            </div>
-
-            {/* Email */}
             <div className="relative">
               <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -119,7 +96,6 @@ export default function Login() {
               />
             </div>
 
-            {/* Senha */}
             <div className="relative">
               <MdLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -164,23 +140,22 @@ export default function Login() {
           </form>
         </div>
 
-        {/* LADO DIREITO: LOGO COM EFEITOS VISUAIS */}
+         {/* LADO DIREITO: LOGO COM EFEITOS VISUAIS */}
         <div className="hidden md:flex w-1/2 bg-primary-500 items-center justify-center text-white flex-col p-12 relative overflow-hidden">
-           {/* Elemento Decorativo: Círculos de fundo */}
-           <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-primary-600 rounded-full opacity-50 shadow-inner" />
-           <div className="absolute bottom-[-10%] left-[-10%] w-48 h-48 bg-primary-700 rounded-full opacity-30" />
+            {/* Elemento Decorativo: Círculos de fundo */}
+            <div className="absolute top-[-10%] right-[-10%] w-64 h-64 bg-primary-600 rounded-full opacity-50 shadow-inner" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-48 h-48 bg-primary-700 rounded-full opacity-30" />
           
-           <div className="relative z-10 flex flex-col items-center">
-             <div className="bg-white/10 p-6 rounded-3xl backdrop-blur-md mb-8">
-               <img src={logo} alt="Logo" className="w-48 brightness-0" />
-             </div>
-             <h2 className="text-4xl font-black text-text-primary mb-4 text-center">Gestão Médica Inteligente</h2>
-             <p className="text-center text-text-primary text-lg max-w-[280px]">
-               Tudo o que você precisa para gerenciar sua clínica em um só lugar.
-            </p>
-           </div>
-         </div>
-
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="bg-white/10 p-6 rounded-3xl backdrop-blur-md mb-8">
+                <img src={logo} alt="Logo" className="w-48 brightness-0" />
+              </div>
+              <h2 className="text-4xl font-black text-text-primary mb-4 text-center">Gestão Médica Inteligente</h2>
+              <p className="text-center text-text-primary text-lg max-w-[280px]">
+                Tudo o que você precisa para gerenciar sua clínica em um só lugar.
+             </p>
+            </div>
+          </div>
       </div>
     </div>
   );

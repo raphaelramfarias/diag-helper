@@ -9,7 +9,7 @@ const BarraPesquisa = ({ pesquisa, setPesquisa, placeholder }) => {
         <Search size={18} />
       </div>
 
-      <input
+    <input
         type="text"
         placeholder={placeholder || "Pesquisar paciente por nome ou CPF..."}
         value={pesquisa}
